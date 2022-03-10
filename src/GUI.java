@@ -23,6 +23,7 @@ public class GUI extends JFrame {
     private JButton ayuda,salir,tableroPc,quitarTablero;
     private JButton [][] btBase;
     private JButton [][] btEnemy;
+    private int numerobarcos;
 
 
 
@@ -31,7 +32,7 @@ public class GUI extends JFrame {
      */
     public GUI(){
         initGUI();
-
+        numerobarcos=4;
         //Default JFrame configuration
         this.setTitle("Batalla Naval");
         //this.setPreferredSize(new Dimension(1095,528));
@@ -86,6 +87,12 @@ public class GUI extends JFrame {
         }
     }
 
+
+    public void elegirBarcos(){
+
+
+
+    }
 
     private void initGUI() {
         this.getContentPane().setLayout(new GridBagLayout());
@@ -220,28 +227,7 @@ public class GUI extends JFrame {
             mitablero.setVisible(true);
             }
 
-            for (int i=0;i<btBase.length;i++){
-                for (int j=0;j<btBase[i].length;j++) {
-                    if(e.getSource()==btBase[i][j]){
-                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                        btBase[i][j].setIcon(image);
-                        if(btBase[i][j]==btBase[i][j]){
-                            int desfase = 10 - (i+1);
-                            int counter=0;
-                            if (desfase!=10){
-                                while (desfase<10){
-                                    counter++;
-                                    desfase++;
-                                }
-                                j++;
-                                System.out.println("contador  "+counter);
-                                System.out.println("y  "+j);
-                                btBase[counter-1][j].setIcon(image);
-                            }
-                        }
-                    }
-                }
-            }
+
 
 
         }
@@ -256,6 +242,24 @@ public class GUI extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
 
+            for (int h = 0; h < numerobarcos; h++) {
+                for (int i = 0; i < btBase.length; i++) {
+                    for (int j = 0; j < btBase[i].length; j++) {
+                        if(j<=10-numerobarcos){
+                            if (e.getSource() == btBase[i][j]) {
+                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                btBase[i][j].setIcon(image);
+                                btBase[i][j].setEnabled(false);
+
+                               // j++;
+                                btBase[i][h + j].setIcon(image);
+                                btBase[i][h + j].setEnabled(false);
+                            }
+                        }
+
+                    }
+                }
+            }
         }
 
         @Override
@@ -271,30 +275,25 @@ public class GUI extends JFrame {
         @Override
         public void mouseEntered(MouseEvent e) {
 
-            int x= e.getX();
-            int y =e.getY();
 
+            for (int h = 0; h < numerobarcos; h++) {
+                for (int i = 0; i < btBase.length; i++) {
+                    for (int j = 0; j < btBase[i].length; j++) {
+                        if(j<10-numerobarcos){
+                            if (e.getSource() == btBase[i][j]) {
+                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                //if(btBase[i][j].isEnabled()==true&&btBase[i][h + j+numerobarcos-1].isEnabled()==false) {
 
-            for (int i=0;i<btBase.length;i++){
-                for (int j=0;j<btBase[i].length;j++) {
-                    if(e.getSource()==btBase[i][j]){
-                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                            btBase[i][j].setIcon(image);
-
-                        if(btBase[i][j]==btBase[i][j]){
-                            int desfase = 10 - (i+1);
-                            int counter=0;
-                            if (desfase!=10){
-                                while (desfase<10){
-                                    counter++;
-                                    desfase++;
-                                }
-                                j++;
-                                System.out.println("contador  "+counter);
-                                System.out.println("y  "+j);
-                                btBase[counter-1][j].setIcon(image);
+                               // }else{
+                                    //if(btBase[i][j].isEnabled()==true){
+                                        btBase[i][j].setIcon(image);
+                                      // j++;
+                                        btBase[i][h + j].setIcon(image);
+                                    }
+                               // }
                             }
-                        }
+                        //}
+
                     }
                 }
             }
@@ -302,7 +301,27 @@ public class GUI extends JFrame {
 
         @Override
         public void mouseExited(MouseEvent e) {
+            for (int h = 0; h < numerobarcos; h++) {
+                for (int i = 0; i < btBase.length; i++) {
+                    for (int j = 0; j < btBase[i].length; j++) {
+                        if(j<10-numerobarcos){
+                            if (e.getSource() == btBase[i][j]) {
+                                if(btBase[i][j].isEnabled()==true){
+                                    btBase[i][j].setIcon(null);
+                                    j++;
+                                    if(btBase[i][h + j].isEnabled()==true){
+                                    btBase[i][h + j].setIcon(null);
+                                    }
+                                }
 
+                            }
+                        }else{
+
+                        }
+
+                    }
+                }
+            }
         }
     }
 
