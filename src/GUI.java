@@ -18,6 +18,8 @@ public class GUI extends JFrame {
     private Header headerProject;
     private JPanel panelBarcos,panelMiTablero,panelTableroPc,panelTableroPc2, MiBase, baseEnemiga;
     private Escucha escucha;
+    private  ImageIcon image;
+    private Mouse mouse=new Mouse();
     private JButton ayuda,salir,tableroPc,quitarTablero;
     private JButton [][] btBase;
     private JButton [][] btEnemy;
@@ -31,7 +33,7 @@ public class GUI extends JFrame {
         initGUI();
 
         //Default JFrame configuration
-        this.setTitle("The Title app");
+        this.setTitle("Batalla Naval");
         //this.setPreferredSize(new Dimension(1095,528));
         this.setBackground(new Color(255,255,255));
         this.setUndecorated(true);
@@ -50,12 +52,12 @@ public class GUI extends JFrame {
     public void llenarBase(){
         int x=10,y=10;
         btBase=new JButton[10][10];
-        for (int i=0;i<btBase.length;i++){
-            for (int j=0;j<btBase[i].length;j++){
+        for (int j=0;j<btBase.length;j++){
+            for (int i=0;i<btBase[j].length;i++){
                 btBase[i][j]=new JButton();
                 btBase[i][j].setBackground(Color.ORANGE);
                 btBase[i][j].setBounds(x,y,35,33);
-
+                btBase[i][j].addMouseListener(mouse);
                 MiBase.add(btBase[i][j],BorderLayout.CENTER);
                 x+=35;
             }
@@ -70,12 +72,12 @@ public class GUI extends JFrame {
     public void llenarEnemy() {
         int x = 10, y = 10;
         btEnemy = new JButton[10][10];
-        for (int i = 0; i < btBase.length; i++) {
-            for (int j = 0; j < btBase[i].length; j++) {
+        for (int j= 0; j < btBase.length; j++) {
+            for (int i = 0; i < btBase[j].length; i++) {
                 btEnemy[i][j] = new JButton();
                 btEnemy[i][j].setBackground(Color.ORANGE);
                 btEnemy[i][j].setBounds(x, y, 35, 33);
-
+                btEnemy[i][j].addActionListener(escucha);
                 baseEnemiga.add(btEnemy[i][j], BorderLayout.CENTER);
                 x += 35;
             }
@@ -203,8 +205,8 @@ public class GUI extends JFrame {
             }
 
             if(e.getSource()==tableroPc){
-                JOptionPane.showMessageDialog(null,"Mostrar");
-                panelTableroPc2=new JPanel();
+                //JOptionPane.showMessageDialog(null,"Mostrar");
+             /*   panelTableroPc2=new JPanel();
                 panelTableroPc2.setPreferredSize(new Dimension(440, 448));
                 panelTableroPc2.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0, 0, 0),3,true),"MAPA",TitledBorder.CENTER,TitledBorder.TOP,new Font("Tahoma", 1, 15)));
                 constraints.gridx=1;
@@ -213,15 +215,41 @@ public class GUI extends JFrame {
                 constraints.fill=GridBagConstraints.NONE;
                 constraints.anchor=GridBagConstraints.CENTER;
                 add(panelTableroPc2,constraints);
+            */
+            tableroRival mitablero= new tableroRival();
+            mitablero.setVisible(true);
             }
+
+            for (int i=0;i<btBase.length;i++){
+                for (int j=0;j<btBase[i].length;j++) {
+                    if(e.getSource()==btBase[i][j]){
+                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                        btBase[i][j].setIcon(image);
+                        if(btBase[i][j]==btBase[i][j]){
+                            int desfase = 10 - (i+1);
+                            int counter=0;
+                            if (desfase!=10){
+                                while (desfase<10){
+                                    counter++;
+                                    desfase++;
+                                }
+                                j++;
+                                System.out.println("contador  "+counter);
+                                System.out.println("y  "+j);
+                                btBase[counter-1][j].setIcon(image);
+                            }
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 
     private  class Mouse implements MouseListener{
 
         public  void mouseMove(MouseEvent e){
-            int x= e.getX();
-            int y =e.getY();
 
         }
 
@@ -243,6 +271,33 @@ public class GUI extends JFrame {
         @Override
         public void mouseEntered(MouseEvent e) {
 
+            int x= e.getX();
+            int y =e.getY();
+
+
+            for (int i=0;i<btBase.length;i++){
+                for (int j=0;j<btBase[i].length;j++) {
+                    if(e.getSource()==btBase[i][j]){
+                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                            btBase[i][j].setIcon(image);
+
+                        if(btBase[i][j]==btBase[i][j]){
+                            int desfase = 10 - (i+1);
+                            int counter=0;
+                            if (desfase!=10){
+                                while (desfase<10){
+                                    counter++;
+                                    desfase++;
+                                }
+                                j++;
+                                System.out.println("contador  "+counter);
+                                System.out.println("y  "+j);
+                                btBase[counter-1][j].setIcon(image);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         @Override
