@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 /**
  * This class is used for ...
@@ -23,7 +24,10 @@ public class GUI extends JFrame {
     private JButton ayuda,salir,tableroPc,quitarTablero;
     private JButton [][] btBase;
     private JButton [][] btEnemy;
-    private int numerobarcos;
+    private ArrayList<JButton> botonesUsados=new ArrayList<JButton>();
+    ;
+    private boolean usado;
+    public static int numerobarcos;
 
 
 
@@ -32,7 +36,7 @@ public class GUI extends JFrame {
      */
     public GUI(){
         initGUI();
-        numerobarcos=4;
+        numerobarcos=3;
         //Default JFrame configuration
         this.setTitle("Batalla Naval");
         //this.setPreferredSize(new Dimension(1095,528));
@@ -88,8 +92,10 @@ public class GUI extends JFrame {
     }
 
 
-    public void elegirBarcos(){
+    public int elegirBarcos(int num){
 
+        this.numerobarcos=num-1;
+        return  numerobarcos;
 
 
     }
@@ -212,17 +218,6 @@ public class GUI extends JFrame {
             }
 
             if(e.getSource()==tableroPc){
-                //JOptionPane.showMessageDialog(null,"Mostrar");
-             /*   panelTableroPc2=new JPanel();
-                panelTableroPc2.setPreferredSize(new Dimension(440, 448));
-                panelTableroPc2.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0, 0, 0),3,true),"MAPA",TitledBorder.CENTER,TitledBorder.TOP,new Font("Tahoma", 1, 15)));
-                constraints.gridx=1;
-                constraints.gridy=3;
-                constraints.gridwidth=1;
-                constraints.fill=GridBagConstraints.NONE;
-                constraints.anchor=GridBagConstraints.CENTER;
-                add(panelTableroPc2,constraints);
-            */
             tableroRival mitablero= new tableroRival();
             mitablero.setVisible(true);
             }
@@ -241,24 +236,42 @@ public class GUI extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-
-            for (int h = 0; h < numerobarcos; h++) {
-                for (int i = 0; i < btBase.length; i++) {
-                    for (int j = 0; j < btBase[i].length; j++) {
-                        if(j<=10-numerobarcos){
-                            if (e.getSource() == btBase[i][j]) {
-                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                btBase[i][j].setIcon(image);
-                                btBase[i][j].setEnabled(false);
-
-                               // j++;
-                                btBase[i][h + j].setIcon(image);
-                                btBase[i][h + j].setEnabled(false);
-                            }
-                        }
-
+            boolean tieneBarco = false;
+            for (int i=0;i<btBase.length;i++){
+                for (int j=0;j<btBase[i].length;j++) {
+                    if(botonesUsados.contains(e.getSource())){
+                        tieneBarco=true;
+                    }
+                    else{
+                        tieneBarco=false;
                     }
                 }
+            }
+
+            if(tieneBarco==false) {
+                for (int h = 0; h < numerobarcos; h++) {
+                    for (int i = 0; i < btBase.length; i++) {
+                        for (int j = 0; j < btBase[i].length; j++) {
+                            if (j <= 10 - numerobarcos) {
+                                if (e.getSource() == btBase[i][j]) {
+
+                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                    btBase[i][j].setIcon(image);
+                                    botonesUsados.add(btBase[i][j]);
+
+                                     j++;
+                                    btBase[i][h + j].setIcon(image);
+                                    botonesUsados.add(btBase[i][h + j]);
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+                elegirBarcos(numerobarcos);
+            }else{
+                JOptionPane.showMessageDialog(null,"No se puede escoger");
             }
         }
 
@@ -275,32 +288,73 @@ public class GUI extends JFrame {
         @Override
         public void mouseEntered(MouseEvent e) {
 
+            if (numerobarcos == 0) {
+                for (int h = 0; h < 1; h++) {
 
-            for (int h = 0; h < numerobarcos; h++) {
-                for (int i = 0; i < btBase.length; i++) {
-                    for (int j = 0; j < btBase[i].length; j++) {
-                        if(j<10-numerobarcos){
-                            if (e.getSource() == btBase[i][j]) {
-                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                //if(btBase[i][j].isEnabled()==true&&btBase[i][h + j+numerobarcos-1].isEnabled()==false) {
-
-                               // }else{
-                                    //if(btBase[i][j].isEnabled()==true){
+                    for (int i = 0; i < btBase.length; i++) {
+                        for (int j = 0; j < btBase[i].length; j++) {
+                            if (!(botonesUsados.contains(btBase[i][j]))) {
+                                if (j < 10) {
+                                    if (e.getSource() == btBase[i][j]) {
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                                         btBase[i][j].setIcon(image);
-                                      // j++;
+                                    }
+                                }else{
+
+                                }
+                            } else {
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (int h = 0; h < numerobarcos; h++) {
+
+                    for (int i = 0; i < btBase.length; i++) {
+                        for (int j = 0; j < btBase[i].length; j++) {
+                            if (!(botonesUsados.contains(btBase[i][j]))) {
+                                if (j < 10 - numerobarcos) {
+                                    if (e.getSource() == btBase[i][j]) {
+
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        btBase[i][j].setIcon(image);
+                                        j++;
                                         btBase[i][h + j].setIcon(image);
                                     }
-                               // }
+                                }
+                            } else {
                             }
-                        //}
-
+                        }
                     }
                 }
             }
         }
 
+
         @Override
         public void mouseExited(MouseEvent e) {
+
+            if(numerobarcos==0){
+                for (int h = 0; h < 1; h++) {
+                    for (int i = 0; i < btBase.length; i++) {
+                        for (int j = 0; j < btBase[i].length; j++) {
+                            if(j<10-numerobarcos){
+                                if (e.getSource() == btBase[i][j]) {
+                                    if(btBase[i][j].isEnabled()==true){
+                                        btBase[i][j].setIcon(null);
+                                    }
+
+                                }
+                            }else{
+
+                            }
+
+                        }
+                    }
+                }
+
+            }else{
+
             for (int h = 0; h < numerobarcos; h++) {
                 for (int i = 0; i < btBase.length; i++) {
                     for (int j = 0; j < btBase[i].length; j++) {
@@ -321,6 +375,13 @@ public class GUI extends JFrame {
 
                     }
                 }
+                }
+            }
+
+            for (JButton bt:
+                    botonesUsados) {
+                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                bt.setIcon(image);
             }
         }
     }
