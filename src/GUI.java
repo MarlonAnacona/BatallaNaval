@@ -97,12 +97,12 @@ public class GUI extends JFrame {
 
 
     public int elegirBarcos(int num){
-if(portaaviones==true){
+        if(portaaviones==true){
 
     this.numerobarcos=num-1;
 
-portaaviones=false;
- submarino=true;
+        portaaviones=false;
+        submarino=true;
 
 }else{
     if(submarino==true&&subma!=0){
@@ -417,9 +417,7 @@ portaaviones=false;
                             } else {
                                 if (e.getSource() == btBase[i][j]) {
                                     image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                    btBase[i][j].setIcon(image);
 
-                                    btBase[i - h][j].setIcon(image);
                                 }
 
                             }
