@@ -19,6 +19,9 @@ public class GUI extends JFrame {
     private Header headerProject;
     private JPanel panelBarcos,panelMiTablero,panelTableroPc,panelTableroPc2, MiBase, baseEnemiga;
     private Escucha escucha;
+
+    public static boolean portaaviones,submarino,destructores,fragatas;
+    public static int porta=1,subma=2,destruc=3,fragata=4;
     private  ImageIcon image;
     private Mouse mouse=new Mouse();
     private JButton ayuda,salir,tableroPc,quitarTablero;
@@ -37,6 +40,7 @@ public class GUI extends JFrame {
     public GUI(){
         initGUI();
         numerobarcos=3;
+        portaaviones=true;
         //Default JFrame configuration
         this.setTitle("Batalla Naval");
         //this.setPreferredSize(new Dimension(1095,528));
@@ -93,11 +97,43 @@ public class GUI extends JFrame {
 
 
     public int elegirBarcos(int num){
+if(portaaviones==true){
 
-        this.numerobarcos=num-1;
+    this.numerobarcos=num-1;
+
+portaaviones=false;
+ submarino=true;
+
+}else{
+    if(submarino==true&&subma!=0){
+        subma--;
+
+        if(subma==0){
+            this.numerobarcos=num-1;
+            submarino=false;
+            destructores=true;
+        }
+
+    }else{
+        if(destructores==true&&destruc!=0){
+            destruc--;
+            if(destruc==0){
+            this.numerobarcos=num-1;
+            destructores=false;
+            fragatas=true;
+            }
+        }else{
+            if(fragatas==true&&fragata!=0){
+                fragata--;
+                if(fragata==0){
+                this.numerobarcos=num-1;
+                fragatas=false;
+            }
+            }
+        }
+    }
+}
         return  numerobarcos;
-
-
     }
 
     private void initGUI() {
@@ -228,41 +264,86 @@ public class GUI extends JFrame {
         }
     }
 
-    private  class Mouse implements MouseListener{
+    private  class Mouse implements MouseListener {
 
-        public  void mouseMove(MouseEvent e){
+        public void mouseMove(MouseEvent e) {
 
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
             boolean tieneBarco = false;
-            for (int i=0;i<btBase.length;i++){
-                for (int j=0;j<btBase[i].length;j++) {
-                    if(botonesUsados.contains(e.getSource())){
-                        tieneBarco=true;
-                    }
-                    else{
-                        tieneBarco=false;
+            for (int i = 0; i < btBase.length; i++) {
+                for (int j = 0; j < btBase[i].length; j++) {
+                    if (botonesUsados.contains(e.getSource())) {
+                        tieneBarco = true;
+                    } else {
+                        tieneBarco = false;
                     }
                 }
             }
 
-            if(tieneBarco==false) {
+            if (tieneBarco == false) {
+                if (numerobarcos == 0) {
+                    for (int h = 0; h < 1; h++) {
+
+                        for (int i = 0; i < btBase.length; i++) {
+                            for (int j = 0; j < btBase[i].length; j++) {
+                                if (!(botonesUsados.contains(btBase[i][j]))) {
+                                    if (j < 10) {
+                                        if (e.getSource() == btBase[i][j]) {
+                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                            botonesUsados.add(btBase[i][j]);
+                                            btBase[i][j].setIcon(image);
+
+                                        }
+                                    } else {
+
+                                    }
+                                } else {
+                                }
+                            }
+                        }
+                    }
+                    elegirBarcos(numerobarcos);
+                }else{
                 for (int h = 0; h < numerobarcos; h++) {
                     for (int i = 0; i < btBase.length; i++) {
                         for (int j = 0; j < btBase[i].length; j++) {
-                            if (j <= 10 - numerobarcos) {
+                            if (j < 10 - numerobarcos) {
                                 if (e.getSource() == btBase[i][j]) {
 
                                     image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                                     btBase[i][j].setIcon(image);
                                     botonesUsados.add(btBase[i][j]);
 
-                                     j++;
+                                    j++;
                                     btBase[i][h + j].setIcon(image);
                                     botonesUsados.add(btBase[i][h + j]);
 
+                                }
+                            }else{
+                                if (i <(10 - numerobarcos) ) {
+                                    if (e.getSource() == btBase[i][j]) {
+
+
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        btBase[i][j].setIcon(image);
+                                        btBase[(i) ][j].setIcon(image);
+                                        botonesUsados.add(btBase[i][j]);
+                                        i++;
+                                        botonesUsados.add(btBase[(i + h) ][j]);
+                                    }
+                                } else {
+                                    if (e.getSource() == btBase[i][j]) {
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        btBase[(i) ][j].setIcon(image);
+                                        botonesUsados.add(btBase[i][j]);
+
+
+                                        btBase[i - h][j].setIcon(image);
+                                        botonesUsados.add(btBase[i - h][j]);
+                                    }
                                 }
                             }
 
@@ -270,10 +351,12 @@ public class GUI extends JFrame {
                     }
                 }
                 elegirBarcos(numerobarcos);
-            }else{
-                JOptionPane.showMessageDialog(null,"No se puede escoger");
+            }
+            }else {
+                JOptionPane.showMessageDialog(null, "No se puede escoger");
             }
         }
+
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -299,7 +382,7 @@ public class GUI extends JFrame {
                                         image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                                         btBase[i][j].setIcon(image);
                                     }
-                                }else{
+                                } else {
 
                                 }
                             } else {
@@ -321,8 +404,24 @@ public class GUI extends JFrame {
                                         j++;
                                         btBase[i][h + j].setIcon(image);
                                     }
+                                } else {
+                                    if (i < (10 - numerobarcos)) {
+                                        if (e.getSource() == btBase[i][j]) {
+                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                            btBase[i][j].setIcon(image);
+                                            i++;
+                                            btBase[(i + h) ][j].setIcon(image);
+                                        }
+                                    }
                                 }
                             } else {
+                                if (e.getSource() == btBase[i][j]) {
+                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                    btBase[i][j].setIcon(image);
+
+                                    btBase[i - h][j].setIcon(image);
+                                }
+
                             }
                         }
                     }
@@ -334,18 +433,18 @@ public class GUI extends JFrame {
         @Override
         public void mouseExited(MouseEvent e) {
 
-            if(numerobarcos==0){
+            if (numerobarcos == 0) {
                 for (int h = 0; h < 1; h++) {
                     for (int i = 0; i < btBase.length; i++) {
                         for (int j = 0; j < btBase[i].length; j++) {
-                            if(j<10-numerobarcos){
+                            if (j < 10 - numerobarcos) {
                                 if (e.getSource() == btBase[i][j]) {
-                                    if(btBase[i][j].isEnabled()==true){
+                                    if (btBase[i][j].isEnabled() == true) {
                                         btBase[i][j].setIcon(null);
                                     }
 
                                 }
-                            }else{
+                            } else {
 
                             }
 
@@ -353,38 +452,54 @@ public class GUI extends JFrame {
                     }
                 }
 
-            }else{
+            } else {
 
-            for (int h = 0; h < numerobarcos; h++) {
-                for (int i = 0; i < btBase.length; i++) {
-                    for (int j = 0; j < btBase[i].length; j++) {
-                        if(j<10-numerobarcos){
-                            if (e.getSource() == btBase[i][j]) {
-                                if(btBase[i][j].isEnabled()==true){
-                                    btBase[i][j].setIcon(null);
-                                    j++;
-                                    if(btBase[i][h + j].isEnabled()==true){
-                                    btBase[i][h + j].setIcon(null);
+                for (int h = 0; h < numerobarcos; h++) {
+                    for (int i = 0; i < btBase.length; i++) {
+                        for (int j = 0; j < btBase[i].length; j++) {
+                            if (j < 10 - numerobarcos) {
+                                if (e.getSource() == btBase[i][j]) {
+                                    if (btBase[i][j].isEnabled() == true) {
+                                        btBase[i][j].setIcon(null);
+                                        j++;
+                                        if (btBase[i][h + j].isEnabled() == true) {
+                                            btBase[i][h + j].setIcon(null);
+                                        }
+                                    }
+
+                                }
+                            } else {
+
+                                if (i < (10 - numerobarcos)) {
+                                    if (e.getSource() == btBase[i][j]) {
+
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        btBase[i][j].setIcon(null);
+                                        i++;
+
+                                        btBase[(i + h) ][j].setIcon(null);
+                                    }
+                                } else {
+                                    if (e.getSource() == btBase[i][j]) {
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        btBase[i][j].setIcon(null);
+
+
+                                        btBase[i - h][j].setIcon(null);
                                     }
                                 }
-
                             }
-                        }else{
-
                         }
-
                     }
                 }
-                }
             }
-
-            for (JButton bt:
+            for (JButton bt :
                     botonesUsados) {
                 image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                 bt.setIcon(image);
             }
+
         }
     }
-
-
 }
+
