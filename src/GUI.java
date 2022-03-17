@@ -20,6 +20,11 @@ public class GUI extends JFrame {
     private JPanel panelBarcos,panelMiTablero,panelTableroPc,panelTableroPc2, MiBase, baseEnemiga;
     private Escucha escucha;
 
+
+    tableroRival tablero;
+    public static ArrayList<JButton> botonesEnemigos=new ArrayList<JButton>();
+
+
     public static boolean portaaviones,submarino,destructores,fragatas;
     public static int porta=1,subma=2,destruc=3,fragata=4;
     private  ImageIcon image;
@@ -99,13 +104,13 @@ public class GUI extends JFrame {
     public int elegirBarcos(int num){
         if(portaaviones==true){
 
-    this.numerobarcos=num-1;
+        this.numerobarcos=num-1;
 
         portaaviones=false;
         submarino=true;
 
-}else{
-    if(submarino==true&&subma!=0){
+        }else{
+        if(submarino==true&&subma!=0){
         subma--;
 
         if(subma==0){
@@ -136,6 +141,52 @@ public class GUI extends JFrame {
         return  numerobarcos;
     }
 
+
+    public boolean colocarbarcoVertical(Object botonP){
+        boolean tieneBarco = false;
+
+        for (int i = 0; i < btBase.length; i++) {
+            for (int j = 0; j < btBase[i].length; j++) {
+                if (j < 10 - numerobarcos) {
+                    if (botonP == btBase[i][j]) {
+                        for (int h = 0; h < numerobarcos; h++) {
+                            j++;
+                            if (botonesUsados.contains(botonP) || botonesUsados.contains(btBase[i][j])) {
+                                tieneBarco = true;
+                                break;
+                            } else {
+                                tieneBarco = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return tieneBarco;
+    }
+
+    public boolean colocarbarcoHorizontal(Object botonP) {
+        boolean tieneBarco = false;
+
+        for (int i = 0; i < btBase.length; i++) {
+            for (int j = 0; j < btBase[i].length; j++) {
+                if (i < 10 - numerobarcos && j >= 10 - numerobarcos) {
+                    if (botonP == btBase[i][j]) {
+                        for (int h = 0; h < numerobarcos; h++) {
+                            i++;
+                            if (botonesUsados.contains(botonP) || botonesUsados.contains(btBase[i][j])) {
+                                tieneBarco = true;
+                                break;
+                            } else {
+                                tieneBarco = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return tieneBarco;
+    }
     private void initGUI() {
         this.getContentPane().setLayout(new GridBagLayout());
         Container contentPane = this.getContentPane();
@@ -249,13 +300,16 @@ public class GUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            barcosRecibidos setInfo= new barcosRecibidos();
             if (e.getSource()==salir){
                 System.exit(0);
             }
 
             if(e.getSource()==tableroPc){
             tableroRival mitablero= new tableroRival();
+                setInfo.setcolocados(true);
             mitablero.setVisible(true);
+
             }
 
 
@@ -272,18 +326,14 @@ public class GUI extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            boolean tieneBarco = false;
-            for (int i = 0; i < btBase.length; i++) {
-                for (int j = 0; j < btBase[i].length; j++) {
-                    if (botonesUsados.contains(e.getSource())) {
-                        tieneBarco = true;
-                    } else {
-                        tieneBarco = false;
-                    }
-                }
-            }
 
-            if (tieneBarco == false) {
+            boolean horizontal=colocarbarcoHorizontal(e.getSource());
+            boolean vertical=colocarbarcoVertical(e.getSource());
+
+            if(horizontal==true||vertical==true){
+                JOptionPane.showMessageDialog(null,"No puedes colocar el barco aqui");
+            }else{
+
                 if (numerobarcos == 0) {
                     for (int h = 0; h < 1; h++) {
 
@@ -352,8 +402,6 @@ public class GUI extends JFrame {
                 }
                 elegirBarcos(numerobarcos);
             }
-            }else {
-                JOptionPane.showMessageDialog(null, "No se puede escoger");
             }
         }
 
