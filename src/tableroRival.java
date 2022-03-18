@@ -14,11 +14,12 @@ public class tableroRival extends JFrame {
     private static boolean portaaviones,submarino,destructores,fragatas;
     private static int porta=1,subma=2,destruc=3,fragata=4;
     private int numerobarcos;
-    private JButton ayuda,salir,tableroPc,quitarTablero;
-    public static JButton [][] btBase1;
+    private static JButton [][] btBase1 =new JButton[10][10];;
     public static ArrayList<JButton> botonesEnemigosColocados =new ArrayList<JButton>();
+    public static ArrayList<String> direcciones =new ArrayList<String>();
     private JButton [][] btEnemy;
     public static boolean contador;
+    public static int s,s2;
     barcosRecibidos setInfo= new barcosRecibidos();
 
     public tableroRival(){
@@ -36,16 +37,15 @@ public class tableroRival extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         llenarBaseEnemiga();
-        if(setInfo.setNumero()<2){
+        if(setInfo.setNumero()<1){
             colocarBarcosEnemigos();
         }else{
 
+            mostrarbarcos();
         }
 
 
     }
-
-
 
     private void initGUI() {
         this.getContentPane().setLayout(new GridBagLayout());
@@ -86,9 +86,29 @@ public class tableroRival extends JFrame {
 
 
     }
+
+    private void mostrarbarcos(){
+
+
+       for (int j = 0; j< btBase1.length; j++){
+            for (int i = 0; i< btBase1[j].length; i++){
+
+               if(direcciones.contains(btBase1[i][j].toString())){
+
+
+                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+
+                        btBase1[i][j].setIcon(image);
+                    }
+
+            }
+        }
+
+    }
+
     public void llenarBaseEnemiga(){
         int x=10,y=10;
-        btBase1 =new JButton[10][10];
+
         for (int j = 0; j< btBase1.length; j++){
             for (int i = 0; i< btBase1[j].length; i++){
                 btBase1[i][j]=new JButton();
@@ -109,7 +129,7 @@ public class tableroRival extends JFrame {
 
             portaaviones=false;
             submarino=true;
-
+            colocarBarcosEnemigos();
         }else{
             if(submarino==true&&subma!=0){
                 subma--;
@@ -118,8 +138,9 @@ public class tableroRival extends JFrame {
                     this.numerobarcos=num-1;
                     submarino=false;
                     destructores=true;
-                }
 
+                }
+                colocarBarcosEnemigos();
             }else{
                 if(destructores==true&&destruc!=0){
                     destruc--;
@@ -127,19 +148,71 @@ public class tableroRival extends JFrame {
                         this.numerobarcos=num-1;
                         destructores=false;
                         fragatas=true;
+
                     }
+                    colocarBarcosEnemigos();
                 }else{
                     if(fragatas==true&&fragata!=0){
                         fragata--;
                         if(fragata==0){
                             this.numerobarcos=num-1;
                             fragatas=false;
+
+                        }else{
+                            colocarBarcosEnemigos();
                         }
+
                     }
                 }
             }
         }
         return  numerobarcos;
+    }
+
+    public boolean colocarbarcoVertical(Object botonP){
+        boolean tieneBarco = false;
+
+        for (int i = 0; i < btBase1.length; i++) {
+            for (int j = 0; j < btBase1[i].length; j++) {
+                if (j < 10 - numerobarcos) {
+                    if (botonP == btBase1[i][j]) {
+                        for (int h = 0; h < numerobarcos; h++) {
+                            j++;
+                            if (botonesEnemigosColocados.contains(botonP) || botonesUsados.contains(btBase[i][j])) {
+                                tieneBarco = true;
+                                break;
+                            } else {
+                                tieneBarco = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return tieneBarco;
+    }
+
+    public boolean colocarbarcoHorizontal(Object botonP) {
+        boolean tieneBarco = false;
+
+        for (int i = 0; i < btBase.length; i++) {
+            for (int j = 0; j < btBase[i].length; j++) {
+                if (i < 10 - numerobarcos && j >= 10 - numerobarcos) {
+                    if (botonP == btBase[i][j]) {
+                        for (int h = 0; h < numerobarcos; h++) {
+                            i++;
+                            if (botonesUsados.contains(botonP) || botonesUsados.contains(btBase[i][j])) {
+                                tieneBarco = true;
+                                break;
+                            } else {
+                                tieneBarco = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return tieneBarco;
     }
 
     public void colocarBarcosEnemigos(){
@@ -152,6 +225,7 @@ public class tableroRival extends JFrame {
         y=aleatorio.nextInt(9);
 
         if(portaaviones==true){
+            System.out.println("1");
            for (int h = 0; h < numerobarcos; h++) {
                for (int i = 0; i < btBase1.length; i++) {
                    for (int j = 0; j < btBase1[i].length; j++) {
@@ -159,25 +233,62 @@ public class tableroRival extends JFrame {
                            if (btBase1[x][y] == btBase1[i][j]) {
 
                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                               btBase1[i][j].setIcon(image);
-                               botonesEnemigosColocados.add(btBase1[i][j]);
+
+                               if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                               }else{
+
+                                   botonesEnemigosColocados.add(btBase1[i][j]);
+                                   direcciones.add(btBase1[i][j].toString());
+                                   btBase1[i][j].setIcon(image);
+
+                                   s=i;
+                                   s2=j;
+                               }
+
 
                                j++;
+                               if(botonesEnemigosColocados.contains(btBase1[i][(h + j)-1])){
+
+                               }else{
+                                   botonesEnemigosColocados.add(btBase1[i][(h + j)-1]);
+                                   direcciones.add(btBase1[i][(h + j)-1].toString());
+                                   s=i;
+                                   s2=j;
+                               }
                                btBase1[i][(h + j)-1].setIcon(image);
-                               botonesEnemigosColocados.add(btBase1[i][(h + j)-1]);
-setInfo.getBarcos(botonesEnemigosColocados);
+
+
                            }
+
+
                        }else{
                            if (i <(10 - numerobarcos)+1 ) {
                                if (btBase1[x][y]== btBase1[i][j]) {
 
 
                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                   btBase1[x][y].setIcon(image);
-                                   btBase1[(i + h)-1 ][j].setIcon(image);
-                                   botonesEnemigosColocados.add(btBase1[i][j]);
+
+
+                                   if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                                   }else{
+                                       botonesEnemigosColocados.add(btBase1[i][j]);
+                                       direcciones.add(btBase1[i][j].toString());
+                                       btBase1[x][y].setIcon(image);
+                                       s=i;
+                                       s2=j;
+                                   }
                                    i++;
-                                   botonesEnemigosColocados.add(btBase1[(i + h)-1 ][j]);
+                                   if(botonesEnemigosColocados.contains(btBase1[(i + h)-1 ][j])){
+
+                                   }else{
+                                       botonesEnemigosColocados.add(btBase1[(i + h)-1 ][j]);
+                                       direcciones.add(btBase1[(i + h)-1 ][j].toString());
+                                       btBase1[(i + h)-1 ][j].setIcon(image);
+                                       s=i;
+                                       s2=j;
+                                   }
                                }
                            } else {
                                if (btBase1[x][y]== btBase1[i][j]) {
@@ -195,8 +306,262 @@ setInfo.getBarcos(botonesEnemigosColocados);
                    }
                }
            }
-       }
+       }else{
+            if(submarino==true){
+                System.out.println("2");
+                for (int h = 0; h < numerobarcos; h++) {
+                    for (int i = 0; i < btBase1.length; i++) {
+                        for (int j = 0; j < btBase1[i].length; j++) {
+                            if (j < (10 - numerobarcos)+1) {
+                                if (btBase1[x][y] == btBase1[i][j]) {
 
+                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+
+                                    if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                                    }else{
+
+                                        botonesEnemigosColocados.add(btBase1[i][j]);
+                                        direcciones.add(btBase1[i][j].toString());
+                                        btBase1[i][j].setIcon(image);
+
+                                        s=i;
+                                        s2=j;
+                                    }
+
+
+                                    j++;
+                                    if(botonesEnemigosColocados.contains(btBase1[i][(h + j)-1])){
+
+                                    }else{
+                                        botonesEnemigosColocados.add(btBase1[i][(h + j)-1]);
+                                        direcciones.add(btBase1[i][(h + j)-1].toString());
+                                        s=i;
+                                        s2=j;
+                                    }
+                                    btBase1[i][(h + j)-1].setIcon(image);
+
+
+                                }
+
+
+                            }else{
+                                if (i <(10 - numerobarcos)+1 ) {
+                                    if (btBase1[x][y]== btBase1[i][j]) {
+
+
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+
+
+                                        if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                                        }else{
+                                            botonesEnemigosColocados.add(btBase1[i][j]);
+                                            direcciones.add(btBase1[i][j].toString());
+                                            btBase1[x][y].setIcon(image);
+                                            s=i;
+                                            s2=j;
+                                        }
+                                        i++;
+                                        if(botonesEnemigosColocados.contains(btBase1[(i + h)-1 ][j])){
+
+                                        }else{
+                                            botonesEnemigosColocados.add(btBase1[(i + h)-1 ][j]);
+                                            direcciones.add(btBase1[(i + h)-1 ][j].toString());
+                                            btBase1[(i + h)-1 ][j].setIcon(image);
+                                            s=i;
+                                            s2=j;
+                                        }
+                                    }
+                                } else {
+                                    if (btBase1[x][y]== btBase1[i][j]) {
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        btBase1[(i) ][j].setIcon(image);
+                                        botonesEnemigosColocados.add(btBase1[i][j]);
+
+
+                                        btBase1[i - h][j].setIcon(image);
+                                        botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }else{
+                if(destructores==true){
+                    System.out.println("3");
+                    for (int h = 0; h < numerobarcos; h++) {
+                        for (int i = 0; i < btBase1.length; i++) {
+                            for (int j = 0; j < btBase1[i].length; j++) {
+                                if (j < (10 - numerobarcos)+1) {
+                                    if (btBase1[x][y] == btBase1[i][j]) {
+
+                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+
+                                        if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                                        }else{
+
+                                            botonesEnemigosColocados.add(btBase1[i][j]);
+                                            direcciones.add(btBase1[i][j].toString());
+                                            btBase1[i][j].setIcon(image);
+
+                                            s=i;
+                                            s2=j;
+                                        }
+
+
+                                        j++;
+                                        if(botonesEnemigosColocados.contains(btBase1[i][(h + j)-1])){
+
+                                        }else{
+                                            botonesEnemigosColocados.add(btBase1[i][(h + j)-1]);
+                                            direcciones.add(btBase1[i][(h + j)-1].toString());
+                                            s=i;
+                                            s2=j;
+                                        }
+                                        btBase1[i][(h + j)-1].setIcon(image);
+
+
+                                    }
+
+
+                                }else{
+                                    if (i <(10 - numerobarcos)+1 ) {
+                                        if (btBase1[x][y]== btBase1[i][j]) {
+
+
+                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+
+
+                                            if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                                            }else{
+                                                botonesEnemigosColocados.add(btBase1[i][j]);
+                                                direcciones.add(btBase1[i][j].toString());
+                                                btBase1[x][y].setIcon(image);
+                                                s=i;
+                                                s2=j;
+                                            }
+                                            i++;
+                                            if(botonesEnemigosColocados.contains(btBase1[(i + h)-1 ][j])){
+
+                                            }else{
+                                                botonesEnemigosColocados.add(btBase1[(i + h)-1 ][j]);
+                                                direcciones.add(btBase1[(i + h)-1 ][j].toString());
+                                                btBase1[(i + h)-1 ][j].setIcon(image);
+                                                s=i;
+                                                s2=j;
+                                            }
+                                        }
+                                    } else {
+                                        if (btBase1[x][y]== btBase1[i][j]) {
+                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                            btBase1[(i) ][j].setIcon(image);
+                                            botonesEnemigosColocados.add(btBase1[i][j]);
+
+
+                                            btBase1[i - h][j].setIcon(image);
+                                            botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }else{
+                    if(fragatas==true){
+                        System.out.println("4");
+                        for (int h = 0; h < numerobarcos; h++) {
+                            for (int i = 0; i < btBase1.length; i++) {
+                                for (int j = 0; j < btBase1[i].length; j++) {
+                                    if (j < (10 - numerobarcos)+1) {
+                                        if (btBase1[x][y] == btBase1[i][j]) {
+
+                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+
+                                            if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                                            }else{
+
+                                                botonesEnemigosColocados.add(btBase1[i][j]);
+                                                direcciones.add(btBase1[i][j].toString());
+                                                btBase1[i][j].setIcon(image);
+
+                                                s=i;
+                                                s2=j;
+                                            }
+
+
+                                            j++;
+                                            if(botonesEnemigosColocados.contains(btBase1[i][(h + j)-1])){
+
+                                            }else{
+                                                botonesEnemigosColocados.add(btBase1[i][(h + j)-1]);
+                                                direcciones.add(btBase1[i][(h + j)-1].toString());
+                                                s=i;
+                                                s2=j;
+                                            }
+                                            btBase1[i][(h + j)-1].setIcon(image);
+
+
+                                        }
+
+
+                                    }else{
+                                        if (i <(10 - numerobarcos)+1 ) {
+                                            if (btBase1[x][y]== btBase1[i][j]) {
+
+
+                                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+
+
+                                                if(botonesEnemigosColocados.contains(btBase1[i][j])){
+
+                                                }else{
+                                                    botonesEnemigosColocados.add(btBase1[i][j]);
+                                                    direcciones.add(btBase1[i][j].toString());
+                                                    btBase1[x][y].setIcon(image);
+                                                    s=i;
+                                                    s2=j;
+                                                }
+                                                i++;
+                                                if(botonesEnemigosColocados.contains(btBase1[(i + h)-1 ][j])){
+
+                                                }else{
+                                                    botonesEnemigosColocados.add(btBase1[(i + h)-1 ][j]);
+                                                    direcciones.add(btBase1[(i + h)-1 ][j].toString());
+                                                    btBase1[(i + h)-1 ][j].setIcon(image);
+                                                    s=i;
+                                                    s2=j;
+                                                }
+                                            }
+                                        } else {
+                                            if (btBase1[x][y]== btBase1[i][j]) {
+                                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                                btBase1[(i) ][j].setIcon(image);
+                                                botonesEnemigosColocados.add(btBase1[i][j]);
+
+
+                                                btBase1[i - h][j].setIcon(image);
+                                                botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        elegirBarcos(numerobarcos);
+        setInfo.getBarcos(botonesEnemigosColocados);
 
 
 }

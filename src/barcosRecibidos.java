@@ -15,6 +15,12 @@ public barcosRecibidos(){
     public void getBarcos(ArrayList enemigo){
 
 botonesUsados=enemigo;
+
+    }
+
+    public ArrayList setBarcos(){
+
+    return botonesUsados;
     }
 
     public int numero(int barco){
