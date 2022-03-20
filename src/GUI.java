@@ -19,9 +19,6 @@ public class GUI extends JFrame {
     private Header headerProject;
     private JPanel panelBarcos,panelMiTablero,panelTableroPc,panelTableroPc2, MiBase, baseEnemiga;
     private Escucha escucha;
-
-
-    tableroRival tablero;
     public static ArrayList<JButton> botonesEnemigos=new ArrayList<JButton>();
 
 
@@ -32,6 +29,7 @@ public class GUI extends JFrame {
     private JButton ayuda,salir,tableroPc,quitarTablero;
     private JButton [][] btBase;
     private JButton [][] btEnemy;
+    tableroRival mitablero= new tableroRival();
     private ArrayList<JButton> botonesUsados=new ArrayList<JButton>();
     ;
     private boolean usado;
@@ -101,6 +99,23 @@ public class GUI extends JFrame {
     }
 
 
+    public void colocarBarcos() {
+        barcosRecibidos barcosEnemigo = new barcosRecibidos();
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 10; j++) {
+                for(int y=0;y<10;y++){
+                    if(mitablero.getPosicionX()[i]==j && mitablero.getPosiciony()[i]==y){
+                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                        btEnemy[j][y].setIcon(image);
+                        botonesEnemigos.add( btEnemy[j][y]);
+                        break;
+                    }
+                }
+            }
+
+    }
+
+    }
     public int elegirBarcos(int num){
         if(portaaviones==true){
 
@@ -306,9 +321,10 @@ public class GUI extends JFrame {
             }
 
             if(e.getSource()==tableroPc){
-            tableroRival mitablero= new tableroRival();
-                setInfo.setcolocados(true);
+
+               setInfo.setcolocados(true);
             mitablero.setVisible(true);
+            colocarBarcos();
 
             }
 

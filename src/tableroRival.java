@@ -20,6 +20,10 @@ public class tableroRival extends JFrame {
     private JButton [][] btEnemy;
     public static boolean contador;
     public static int s,s2;
+    private int x1=0;
+    private int y1=0;
+    public static int posicionx[]=new int[20];
+    public static int posiciony[]=new int[20];
     barcosRecibidos setInfo= new barcosRecibidos();
 
     public tableroRival(){
@@ -85,6 +89,11 @@ public class tableroRival extends JFrame {
         add(panelMiTablero,constraints);
 
 
+    }
+
+    public ArrayList direccion(){
+
+        return  direcciones;
     }
 
     private void mostrarbarcos(){
@@ -220,6 +229,16 @@ public class tableroRival extends JFrame {
         return tieneBarco;
     }
 
+    public int[] getPosicionX(){
+
+        return posicionx;
+    }
+    public int[] getPosiciony(){
+
+        return posiciony;
+    }
+
+
     public void colocarBarcosEnemigos(){
 
 
@@ -251,12 +270,16 @@ public class tableroRival extends JFrame {
 
                                     } else {
 
+
                                         botonesEnemigosColocados.add(btBase1[i][j]);
                                         direcciones.add(btBase1[i][j].toString());
                                         btBase1[i][j].setIcon(image);
 
                                         s = i;
                                         s2 = j;
+                                        posicionx[x1]=s;
+                                        posiciony[x1]=s2;
+                                        x1++;
                                     }
 
 
@@ -267,7 +290,10 @@ public class tableroRival extends JFrame {
                                         botonesEnemigosColocados.add(btBase1[i][(h + j) - 1]);
                                         direcciones.add(btBase1[i][(h + j) - 1].toString());
                                         s = i;
-                                        s2 = j;
+                                        s2 =( h + j) - 1;
+                                        posicionx[x1]=s;
+                                        posiciony[x1]=s2;
+                                        x1++;
                                     }
                                     btBase1[i][(h + j) - 1].setIcon(image);
 
@@ -289,8 +315,12 @@ public class tableroRival extends JFrame {
                                             botonesEnemigosColocados.add(btBase1[i][j]);
                                             direcciones.add(btBase1[i][j].toString());
                                             btBase1[x][y].setIcon(image);
+
                                             s = i;
                                             s2 = j;
+                                            posicionx[x1]=s;
+                                            posiciony[x1]=s2;
+                                            x1++;
                                         }
                                         i++;
                                         if (botonesEnemigosColocados.contains(btBase1[(i + h) - 1][j])) {
@@ -299,8 +329,11 @@ public class tableroRival extends JFrame {
                                             botonesEnemigosColocados.add(btBase1[(i + h) - 1][j]);
                                             direcciones.add(btBase1[(i + h) - 1][j].toString());
                                             btBase1[(i + h) - 1][j].setIcon(image);
-                                            s = i;
+                                            s = (i + h) - 1;
                                             s2 = j;
+                                            posicionx[x1]=s;
+                                            posiciony[x1]=s2;
+                                            x1++;
                                         }
                                     }
                                 } else {
@@ -308,10 +341,19 @@ public class tableroRival extends JFrame {
                                         image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                                         btBase1[(i)][j].setIcon(image);
                                         botonesEnemigosColocados.add(btBase1[i][j]);
-
+                                        s = i;
+                                        s2 = j;
+                                        posicionx[x1]=s;
+                                        posiciony[x1]=s2;
+                                        x1++;
 
                                         btBase1[i - h][j].setIcon(image);
                                         botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                        s = i - h;
+                                        s2 = j;
+                                        posicionx[x1]=s;
+                                        posiciony[x1]=s2;
+                                        x1++;
                                     }
                                 }
                             }
@@ -339,6 +381,9 @@ public class tableroRival extends JFrame {
 
                                             s = i;
                                             s2 = j;
+                                            posicionx[x1]=s;
+                                            posiciony[x1]=s2;
+                                            x1++;
                                         }
 
 
@@ -349,7 +394,10 @@ public class tableroRival extends JFrame {
                                             botonesEnemigosColocados.add(btBase1[i][(h + j) - 1]);
                                             direcciones.add(btBase1[i][(h + j) - 1].toString());
                                             s = i;
-                                            s2 = j;
+                                            s2 = (h + j) - 1;
+                                            posicionx[x1]=s;
+                                            posiciony[x1]=s2;
+                                            x1++;
                                         }
                                         btBase1[i][(h + j) - 1].setIcon(image);
 
@@ -373,6 +421,9 @@ public class tableroRival extends JFrame {
                                                 btBase1[x][y].setIcon(image);
                                                 s = i;
                                                 s2 = j;
+                                                posicionx[x1]=s;
+                                                posiciony[x1]=s2;
+                                                x1++;
                                             }
                                             i++;
                                             if (botonesEnemigosColocados.contains(btBase1[(i + h) - 1][j])) {
@@ -381,8 +432,11 @@ public class tableroRival extends JFrame {
                                                 botonesEnemigosColocados.add(btBase1[(i + h) - 1][j]);
                                                 direcciones.add(btBase1[(i + h) - 1][j].toString());
                                                 btBase1[(i + h) - 1][j].setIcon(image);
-                                                s = i;
+                                                s = (i + h) - 1;
                                                 s2 = j;
+                                                posicionx[x1]=s;
+                                                posiciony[x1]=s2;
+                                                x1++;
                                             }
                                         }
                                     } else {
@@ -390,10 +444,19 @@ public class tableroRival extends JFrame {
                                             image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                                             btBase1[(i)][j].setIcon(image);
                                             botonesEnemigosColocados.add(btBase1[i][j]);
-
+                                            s =i;
+                                            s2 = j;
+                                            posicionx[x1]=s;
+                                            posiciony[x1]=s2;
+                                            x1++;
 
                                             btBase1[i - h][j].setIcon(image);
                                             botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                            s = i - h ;
+                                            s2 = j;
+                                            posicionx[x1]=s;
+                                            posiciony[x1]=s2;
+                                            x1++;
                                         }
                                     }
                                 }
@@ -419,8 +482,11 @@ public class tableroRival extends JFrame {
                                                 direcciones.add(btBase1[i][j].toString());
                                                 btBase1[i][j].setIcon(image);
 
-                                                s = i;
+                                                s =i;
                                                 s2 = j;
+                                                posicionx[x1]=s;
+                                                posiciony[x1]=s2;
+                                                x1++;
                                             }
 
 
@@ -430,8 +496,11 @@ public class tableroRival extends JFrame {
                                             } else {
                                                 botonesEnemigosColocados.add(btBase1[i][(h + j) - 1]);
                                                 direcciones.add(btBase1[i][(h + j) - 1].toString());
-                                                s = i;
-                                                s2 = j;
+                                                s =i;
+                                                s2 = (h + j) - 1;
+                                                posicionx[x1]=s;
+                                                posiciony[x1]=s2;
+                                                x1++;
                                             }
                                             btBase1[i][(h + j) - 1].setIcon(image);
 
@@ -453,8 +522,12 @@ public class tableroRival extends JFrame {
                                                     botonesEnemigosColocados.add(btBase1[i][j]);
                                                     direcciones.add(btBase1[i][j].toString());
                                                     btBase1[x][y].setIcon(image);
-                                                    s = i;
+
+                                                    s =i;
                                                     s2 = j;
+                                                    posicionx[x1]=s;
+                                                    posiciony[x1]=s2;
+                                                    x1++;
                                                 }
                                                 i++;
                                                 if (botonesEnemigosColocados.contains(btBase1[(i + h) - 1][j])) {
@@ -463,8 +536,12 @@ public class tableroRival extends JFrame {
                                                     botonesEnemigosColocados.add(btBase1[(i + h) - 1][j]);
                                                     direcciones.add(btBase1[(i + h) - 1][j].toString());
                                                     btBase1[(i + h) - 1][j].setIcon(image);
-                                                    s = i;
+
+                                                    s =(i + h) - 1;
                                                     s2 = j;
+                                                    posicionx[x1]=s;
+                                                    posiciony[x1]=s2;
+                                                    x1++;
                                                 }
                                             }
                                         } else {
@@ -472,10 +549,19 @@ public class tableroRival extends JFrame {
                                                 image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                                                 btBase1[(i)][j].setIcon(image);
                                                 botonesEnemigosColocados.add(btBase1[i][j]);
-
+                                                s =i;
+                                                s2 = j;
+                                                posicionx[x1]=s;
+                                                posiciony[x1]=s2;
+                                                x1++;
 
                                                 btBase1[i - h][j].setIcon(image);
                                                 botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                                s =i - h;
+                                                s2 = j;
+                                                posicionx[x1]=s;
+                                                posiciony[x1]=s2;
+                                                x1++;
                                             }
                                         }
                                     }
@@ -501,8 +587,11 @@ public class tableroRival extends JFrame {
                                                     direcciones.add(btBase1[i][j].toString());
                                                     btBase1[i][j].setIcon(image);
 
-                                                    s = i;
+                                                    s =i;
                                                     s2 = j;
+                                                    posicionx[x1]=s;
+                                                    posiciony[x1]=s2;
+                                                    x1++;
                                                 }
 
 
@@ -512,8 +601,11 @@ public class tableroRival extends JFrame {
                                                 } else {
                                                     botonesEnemigosColocados.add(btBase1[i][(h + j) - 1]);
                                                     direcciones.add(btBase1[i][(h + j) - 1].toString());
-                                                    s = i;
-                                                    s2 = j;
+                                                    s =i;
+                                                    s2 = (h + j) - 1;
+                                                    posicionx[x1]=s;
+                                                    posiciony[x1]=s2;
+                                                    x1++;
                                                 }
                                                 btBase1[i][(h + j) - 1].setIcon(image);
 
@@ -535,8 +627,11 @@ public class tableroRival extends JFrame {
                                                         botonesEnemigosColocados.add(btBase1[i][j]);
                                                         direcciones.add(btBase1[i][j].toString());
                                                         btBase1[x][y].setIcon(image);
-                                                        s = i;
+                                                        s =i;
                                                         s2 = j;
+                                                        posicionx[x1]=s;
+                                                        posiciony[x1]=s2;
+                                                        x1++;
                                                     }
                                                     i++;
                                                     if (botonesEnemigosColocados.contains(btBase1[(i + h) - 1][j])) {
@@ -545,8 +640,11 @@ public class tableroRival extends JFrame {
                                                         botonesEnemigosColocados.add(btBase1[(i + h) - 1][j]);
                                                         direcciones.add(btBase1[(i + h) - 1][j].toString());
                                                         btBase1[(i + h) - 1][j].setIcon(image);
-                                                        s = i;
+                                                        s =(i + h) - 1;
                                                         s2 = j;
+                                                        posicionx[x1]=s;
+                                                        posiciony[x1]=s2;
+                                                        x1++;
                                                     }
                                                 }
                                             } else {
@@ -554,10 +652,19 @@ public class tableroRival extends JFrame {
                                                     image = new ImageIcon(getClass().getResource("/resources/granada.png"));
                                                     btBase1[(i)][j].setIcon(image);
                                                     botonesEnemigosColocados.add(btBase1[i][j]);
-
+                                                    s =i;
+                                                    s2 = j;
+                                                    posicionx[x1]=s;
+                                                    posiciony[x1]=s2;
+                                                    x1++;
 
                                                     btBase1[i - h][j].setIcon(image);
                                                     botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                                    s =i - h;
+                                                    s2 = j;
+                                                    posicionx[x1]=s;
+                                                    posiciony[x1]=s2;
+                                                    x1++;
                                                 }
                                             }
                                         }
