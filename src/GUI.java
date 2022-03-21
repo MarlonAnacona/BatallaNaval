@@ -105,7 +105,7 @@ public class GUI extends JFrame {
             for (int j = 0; j < 10; j++) {
                 for(int y=0;y<10;y++){
                     if(mitablero.getPosicionX()[i]==j && mitablero.getPosiciony()[i]==y){
-                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                         btEnemy[j][y].setIcon(image);
                         botonesEnemigos.add( btEnemy[j][y]);
                         break;
@@ -202,11 +202,15 @@ public class GUI extends JFrame {
         }
         return tieneBarco;
     }
+    /**
+     * This method is used to set up the default JComponent Configuration,
+     * create Listener and control Objects used for the GUI class
+     */
     private void initGUI() {
         this.getContentPane().setLayout(new GridBagLayout());
         Container contentPane = this.getContentPane();
         //contentPane.setLayout(new ());
-
+        mitablero.setVisible(false);
         MiBase =new JPanel();
         MiBase.setLayout(null);
 
@@ -358,10 +362,14 @@ public class GUI extends JFrame {
                                 if (!(botonesUsados.contains(btBase[i][j]))) {
                                     if (j < 10) {
                                         if (e.getSource() == btBase[i][j]) {
-                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                            botonesUsados.add(btBase[i][j]);
-                                            btBase[i][j].setIcon(image);
+                                            image = new ImageIcon(getClass().getResource("/resources/porta.png"));
 
+                                            if(botonesUsados.contains(btBase[i][j])){
+
+                                            }else{
+                                                botonesUsados.add(btBase[i][j]);
+                                                btBase[i][j].setIcon(image);
+                                            }
                                         }
                                     } else {
 
@@ -379,36 +387,63 @@ public class GUI extends JFrame {
                             if (j < 10 - numerobarcos) {
                                 if (e.getSource() == btBase[i][j]) {
 
-                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                    btBase[i][j].setIcon(image);
-                                    botonesUsados.add(btBase[i][j]);
+                                    image = new ImageIcon(getClass().getResource("/resources/porta.png"));
 
+                                    if (botonesUsados.contains(btBase[i][j])) {
+
+                                    }else{
+                                        btBase[i][j].setIcon(image);
+                                        botonesUsados.add(btBase[i][j]);
+                                    }
                                     j++;
-                                    btBase[i][h + j].setIcon(image);
-                                    botonesUsados.add(btBase[i][h + j]);
+                                    if (botonesUsados.contains(btBase[i][h + j])) {
 
+                                    }else {
+                                        btBase[i][h + j].setIcon(image);
+                                        botonesUsados.add(btBase[i][h + j]);
+                                    }
                                 }
                             }else{
                                 if (i <(10 - numerobarcos) ) {
                                     if (e.getSource() == btBase[i][j]) {
 
 
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                        btBase[i][j].setIcon(image);
-                                        btBase[(i) ][j].setIcon(image);
-                                        botonesUsados.add(btBase[i][j]);
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
+
+                                        if (botonesUsados.contains(btBase[i][j])) {
+
+                                        }else{
+                                            btBase[i][j].setIcon(image);
+                                            botonesUsados.add(btBase[i][j]);
+                                        }
                                         i++;
-                                        botonesUsados.add(btBase[(i + h) ][j]);
+                                        if(botonesUsados.contains(btBase[(i + h)][j])) {
+
+
+
+                                        }else{
+                                            btBase[(i + h)][j].setIcon(image);
+                                            botonesUsados.add(btBase[(i + h) ][j]);
+                                        }
                                     }
                                 } else {
                                     if (e.getSource() == btBase[i][j]) {
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                        btBase[(i) ][j].setIcon(image);
-                                        botonesUsados.add(btBase[i][j]);
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
+
+                                        if (botonesUsados.contains(btBase[i][j])) {
+
+                                        }else{
+                                            btBase[i][j].setIcon(image);
+                                            botonesUsados.add(btBase[i][j]);
+                                        }
+
+                                        if(botonesUsados.contains(btBase[i - h][j])) {
 
 
-                                        btBase[i - h][j].setIcon(image);
-                                        botonesUsados.add(btBase[i - h][j]);
+                                        }else{
+                                            btBase[i - h][j].setIcon(image);
+                                            botonesUsados.add(btBase[i - h][j]);
+                                        }
                                     }
                                 }
                             }
@@ -443,7 +478,7 @@ public class GUI extends JFrame {
                             if (!(botonesUsados.contains(btBase[i][j]))) {
                                 if (j < 10) {
                                     if (e.getSource() == btBase[i][j]) {
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         btBase[i][j].setIcon(image);
                                     }
                                 } else {
@@ -463,7 +498,7 @@ public class GUI extends JFrame {
                                 if (j < 10 - numerobarcos) {
                                     if (e.getSource() == btBase[i][j]) {
 
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         btBase[i][j].setIcon(image);
                                         j++;
                                         btBase[i][h + j].setIcon(image);
@@ -471,7 +506,7 @@ public class GUI extends JFrame {
                                 } else {
                                     if (i < (10 - numerobarcos)) {
                                         if (e.getSource() == btBase[i][j]) {
-                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                            image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                             btBase[i][j].setIcon(image);
                                             i++;
                                             btBase[(i + h) ][j].setIcon(image);
@@ -480,7 +515,7 @@ public class GUI extends JFrame {
                                 }
                             } else {
                                 if (e.getSource() == btBase[i][j]) {
-                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                    image = new ImageIcon(getClass().getResource("/resources/porta.png"));
 
                                 }
 
@@ -535,7 +570,7 @@ public class GUI extends JFrame {
                                 if (i < (10 - numerobarcos)) {
                                     if (e.getSource() == btBase[i][j]) {
 
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         btBase[i][j].setIcon(null);
                                         i++;
 
@@ -543,7 +578,7 @@ public class GUI extends JFrame {
                                     }
                                 } else {
                                     if (e.getSource() == btBase[i][j]) {
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         btBase[i][j].setIcon(null);
 
 
@@ -557,7 +592,7 @@ public class GUI extends JFrame {
             }
             for (JButton bt :
                     botonesUsados) {
-                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                 bt.setIcon(image);
             }
 

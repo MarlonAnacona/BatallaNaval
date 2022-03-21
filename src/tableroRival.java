@@ -2,6 +2,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,9 +21,11 @@ public class tableroRival extends JFrame {
     public static ArrayList<String> direcciones =new ArrayList<String>();
     private JButton [][] btEnemy;
     public static boolean contador;
+    private JButton salir1;
     public static int s,s2;
     private int x1=0;
     private int y1=0;
+    private Escucha1 escucha;
     public static int posicionx[]=new int[20];
     public static int posiciony[]=new int[20];
     barcosRecibidos setInfo= new barcosRecibidos();
@@ -67,6 +71,15 @@ public class tableroRival extends JFrame {
         baseEnemiga.setPreferredSize(new Dimension(370,350));
         baseEnemiga.setBackground(Color.darkGray);
 
+        salir1 = new JButton(" X ");
+        salir1.addActionListener(escucha);
+        constraints.gridx=2;
+        constraints.gridy=1;
+        constraints.gridwidth=1;
+        constraints.fill=GridBagConstraints.NONE;
+        constraints.anchor=GridBagConstraints.LINE_END;
+
+        this.add(salir1,constraints);
 
         headerProject = new Header("Tablero enemigo", Color.BLUE);
         constraints.gridx=0;
@@ -105,7 +118,7 @@ public class tableroRival extends JFrame {
                if(direcciones.contains(btBase1[i][j].toString())){
 
 
-                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
 
                         btBase1[i][j].setIcon(image);
                     }
@@ -253,69 +266,56 @@ public class tableroRival extends JFrame {
 
         if(horizontal==true||vertical==true){
 
-            System.out.println("sobrepóne");
+            System.out.println("sobrepóne" + x1);
         colocarBarcosEnemigos();
         }else {
             if (portaaviones == true) {
-
+               // System.out.println(x1);
                 for (int h = 0; h < numerobarcos; h++) {
                     for (int i = 0; i < btBase1.length; i++) {
                         for (int j = 0; j < btBase1[i].length; j++) {
                             if (j < (10 - numerobarcos) + 1) {
                                 if (btBase1[x][y] == btBase1[i][j]) {
 
-                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-
+                                    image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                     if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
                                     } else {
-
-
                                         botonesEnemigosColocados.add(btBase1[i][j]);
                                         direcciones.add(btBase1[i][j].toString());
                                         btBase1[i][j].setIcon(image);
-
                                         s = i;
                                         s2 = j;
                                         posicionx[x1]=s;
                                         posiciony[x1]=s2;
                                         x1++;
                                     }
-
-
                                     j++;
                                     if (botonesEnemigosColocados.contains(btBase1[i][(h + j) - 1])) {
 
                                     } else {
                                         botonesEnemigosColocados.add(btBase1[i][(h + j) - 1]);
                                         direcciones.add(btBase1[i][(h + j) - 1].toString());
+                                        btBase1[i][(h + j) - 1].setIcon(image);
                                         s = i;
                                         s2 =( h + j) - 1;
                                         posicionx[x1]=s;
                                         posiciony[x1]=s2;
                                         x1++;
                                     }
-                                    btBase1[i][(h + j) - 1].setIcon(image);
-
-
                                 }
 
 
                             } else {
                                 if (i < (10 - numerobarcos) + 1) {
                                     if (btBase1[x][y] == btBase1[i][j]) {
-
-
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-
-
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
                                         } else {
                                             botonesEnemigosColocados.add(btBase1[i][j]);
                                             direcciones.add(btBase1[i][j].toString());
                                             btBase1[x][y].setIcon(image);
-
                                             s = i;
                                             s2 = j;
                                             posicionx[x1]=s;
@@ -338,17 +338,19 @@ public class tableroRival extends JFrame {
                                     }
                                 } else {
                                     if (btBase1[x][y] == btBase1[i][j]) {
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-                                        btBase1[(i)][j].setIcon(image);
+                                       image = new ImageIcon(getClass().getResource("/resources/porta.png"));
+                                        direcciones.add(btBase1[i][j].toString());
                                         botonesEnemigosColocados.add(btBase1[i][j]);
+                                        btBase1[(i)][j].setIcon(image);
                                         s = i;
                                         s2 = j;
                                         posicionx[x1]=s;
                                         posiciony[x1]=s2;
                                         x1++;
 
-                                        btBase1[i - h][j].setIcon(image);
+                                        direcciones.add(btBase1[i - h][j].toString());
                                         botonesEnemigosColocados.add(btBase1[i - h][j]);
+                                        btBase1[i - h][j].setIcon(image);
                                         s = i - h;
                                         s2 = j;
                                         posicionx[x1]=s;
@@ -363,13 +365,14 @@ public class tableroRival extends JFrame {
                 }
             } else {
                 if (submarino == true) {
+                    System.out.println(x1);
                     for (int h = 0; h < numerobarcos; h++) {
                         for (int i = 0; i < btBase1.length; i++) {
                             for (int j = 0; j < btBase1[i].length; j++) {
                                 if (j < (10 - numerobarcos) + 1) {
                                     if (btBase1[x][y] == btBase1[i][j]) {
 
-                                        image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                        image = new ImageIcon(getClass().getResource("/resources/submarin.png"));
 
                                         if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
@@ -410,7 +413,7 @@ public class tableroRival extends JFrame {
                                         if (btBase1[x][y] == btBase1[i][j]) {
 
 
-                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                            image = new ImageIcon(getClass().getResource("/resources/submarin.png"));
 
 
                                             if (botonesEnemigosColocados.contains(btBase1[i][j])) {
@@ -441,7 +444,7 @@ public class tableroRival extends JFrame {
                                         }
                                     } else {
                                         if (btBase1[x][y] == btBase1[i][j]) {
-                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                            image = new ImageIcon(getClass().getResource("/resources/submarin.png"));
                                             btBase1[(i)][j].setIcon(image);
                                             botonesEnemigosColocados.add(btBase1[i][j]);
                                             s =i;
@@ -466,13 +469,14 @@ public class tableroRival extends JFrame {
                     }
                 } else {
                     if (destructores == true) {
+                        System.out.println(x1);
                         for (int h = 0; h < numerobarcos; h++) {
                             for (int i = 0; i < btBase1.length; i++) {
                                 for (int j = 0; j < btBase1[i].length; j++) {
                                     if (j < (10 - numerobarcos) + 1) {
                                         if (btBase1[x][y] == btBase1[i][j]) {
 
-                                            image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                            image = new ImageIcon(getClass().getResource("/resources/destructo.png"));
 
                                             if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
@@ -496,33 +500,24 @@ public class tableroRival extends JFrame {
                                             } else {
                                                 botonesEnemigosColocados.add(btBase1[i][(h + j) - 1]);
                                                 direcciones.add(btBase1[i][(h + j) - 1].toString());
+                                                btBase1[i][(h + j) - 1].setIcon(image);
                                                 s =i;
                                                 s2 = (h + j) - 1;
                                                 posicionx[x1]=s;
                                                 posiciony[x1]=s2;
                                                 x1++;
                                             }
-                                            btBase1[i][(h + j) - 1].setIcon(image);
-
-
                                         }
-
-
                                     } else {
                                         if (i < (10 - numerobarcos) + 1) {
                                             if (btBase1[x][y] == btBase1[i][j]) {
-
-
-                                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-
-
+                                                image = new ImageIcon(getClass().getResource("/resources/destructo.png"));
                                                 if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
                                                 } else {
                                                     botonesEnemigosColocados.add(btBase1[i][j]);
                                                     direcciones.add(btBase1[i][j].toString());
                                                     btBase1[x][y].setIcon(image);
-
                                                     s =i;
                                                     s2 = j;
                                                     posicionx[x1]=s;
@@ -546,7 +541,7 @@ public class tableroRival extends JFrame {
                                             }
                                         } else {
                                             if (btBase1[x][y] == btBase1[i][j]) {
-                                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                               /* image = new ImageIcon(getClass().getResource("/resources/destructo.png"));
                                                 btBase1[(i)][j].setIcon(image);
                                                 botonesEnemigosColocados.add(btBase1[i][j]);
                                                 s =i;
@@ -561,7 +556,7 @@ public class tableroRival extends JFrame {
                                                 s2 = j;
                                                 posicionx[x1]=s;
                                                 posiciony[x1]=s2;
-                                                x1++;
+                                                x1++;*/
                                             }
                                         }
                                     }
@@ -571,56 +566,45 @@ public class tableroRival extends JFrame {
                         }
                     } else {
                         if (fragatas == true) {
+                            System.out.println(x1);
                             for (int h = 0; h < numerobarcos; h++) {
                                 for (int i = 0; i < btBase1.length; i++) {
                                     for (int j = 0; j < btBase1[i].length; j++) {
                                         if (j < (10 - numerobarcos) + 1) {
                                             if (btBase1[x][y] == btBase1[i][j]) {
 
-                                                image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                                image = new ImageIcon(getClass().getResource("/resources/fragat.png"));
 
                                                 if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
                                                 } else {
-
                                                     botonesEnemigosColocados.add(btBase1[i][j]);
                                                     direcciones.add(btBase1[i][j].toString());
                                                     btBase1[i][j].setIcon(image);
-
                                                     s =i;
                                                     s2 = j;
                                                     posicionx[x1]=s;
                                                     posiciony[x1]=s2;
                                                     x1++;
                                                 }
-
-
                                                 j++;
                                                 if (botonesEnemigosColocados.contains(btBase1[i][(h + j) - 1])) {
 
                                                 } else {
                                                     botonesEnemigosColocados.add(btBase1[i][(h + j) - 1]);
                                                     direcciones.add(btBase1[i][(h + j) - 1].toString());
+                                                    btBase1[i][(h + j) - 1].setIcon(image);
                                                     s =i;
                                                     s2 = (h + j) - 1;
                                                     posicionx[x1]=s;
                                                     posiciony[x1]=s2;
                                                     x1++;
                                                 }
-                                                btBase1[i][(h + j) - 1].setIcon(image);
-
-
                                             }
-
-
                                         } else {
                                             if (i < (10 - numerobarcos) + 1) {
                                                 if (btBase1[x][y] == btBase1[i][j]) {
-
-
-                                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
-
-
+                                                    image = new ImageIcon(getClass().getResource("/resources/fragat.png"));
                                                     if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
                                                     } else {
@@ -649,7 +633,7 @@ public class tableroRival extends JFrame {
                                                 }
                                             } else {
                                                 if (btBase1[x][y] == btBase1[i][j]) {
-                                                    image = new ImageIcon(getClass().getResource("/resources/granada.png"));
+                                                   /* image = new ImageIcon(getClass().getResource("/resources/fragat.png"));
                                                     btBase1[(i)][j].setIcon(image);
                                                     botonesEnemigosColocados.add(btBase1[i][j]);
                                                     s =i;
@@ -664,7 +648,7 @@ public class tableroRival extends JFrame {
                                                     s2 = j;
                                                     posicionx[x1]=s;
                                                     posiciony[x1]=s2;
-                                                    x1++;
+                                                    x1++;*/
                                                 }
                                             }
                                         }
@@ -681,5 +665,18 @@ public class tableroRival extends JFrame {
             setInfo.getBarcos(botonesEnemigosColocados);
 
         }
+}
+
+
+private class Escucha1 implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource()==salir1){
+       setVisible(false);
+        }
+
+    }
 }
 }
