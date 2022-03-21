@@ -29,7 +29,7 @@ public class GUI extends JFrame {
     private JButton ayuda,salir,tableroPc,quitarTablero;
     private JButton [][] btBase;
     private JButton [][] btEnemy;
-    tableroRival mitablero= new tableroRival();
+    private tableroRival mitablero= new tableroRival();
     private ArrayList<JButton> botonesUsados=new ArrayList<JButton>();
     ;
     private boolean usado;
@@ -100,14 +100,15 @@ public class GUI extends JFrame {
 
 
     public void colocarBarcos() {
-        barcosRecibidos barcosEnemigo = new barcosRecibidos();
+
+
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 10; j++) {
                 for(int y=0;y<10;y++){
                     if(mitablero.getPosicionX()[i]==j && mitablero.getPosiciony()[i]==y){
-                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
-                        btEnemy[j][y].setIcon(image);
+
                         botonesEnemigos.add( btEnemy[j][y]);
+                        btEnemy[j][y].addActionListener(escucha);
                         break;
                     }
                 }

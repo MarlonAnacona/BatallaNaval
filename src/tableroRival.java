@@ -21,11 +21,11 @@ public class tableroRival extends JFrame {
     public static ArrayList<String> direcciones =new ArrayList<String>();
     private JButton [][] btEnemy;
     public static boolean contador;
-    private JButton salir1;
+    private JButton salir;
     public static int s,s2;
     private int x1=0;
     private int y1=0;
-    private Escucha1 escucha;
+    private Escucha escucha;
     public static int posicionx[]=new int[20];
     public static int posiciony[]=new int[20];
     barcosRecibidos setInfo= new barcosRecibidos();
@@ -55,54 +55,7 @@ public class tableroRival extends JFrame {
 
     }
 
-    private void initGUI() {
-        this.getContentPane().setLayout(new GridBagLayout());
-        Container contentPane = this.getContentPane();
-        //contentPane.setLayout(new ());
 
-        MiBase =new JPanel();
-        MiBase.setLayout(null);
-        numerobarcos=4;
-        portaaviones=true;
-        MiBase.setPreferredSize(new Dimension(370,350));
-        MiBase.setBackground(Color.DARK_GRAY);
-        baseEnemiga =new JPanel();
-        baseEnemiga.setLayout(null);
-        baseEnemiga.setPreferredSize(new Dimension(370,350));
-        baseEnemiga.setBackground(Color.darkGray);
-
-        salir1 = new JButton(" X ");
-        salir1.addActionListener(escucha);
-        constraints.gridx=2;
-        constraints.gridy=1;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.NONE;
-        constraints.anchor=GridBagConstraints.LINE_END;
-
-        this.add(salir1,constraints);
-
-        headerProject = new Header("Tablero enemigo", Color.BLUE);
-        constraints.gridx=0;
-        constraints.gridy=0;
-        constraints.gridwidth=4;
-        constraints.fill=GridBagConstraints.HORIZONTAL;
-        this.add(headerProject,constraints);
-
-
-        panelMiTablero=new JPanel();
-        panelMiTablero.setPreferredSize(new Dimension(440, 400));
-        panelMiTablero.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0, 0, 0),3,true),"BASE",TitledBorder.CENTER,TitledBorder.TOP,new Font("Tahoma", 1, 15)));
-        constraints.gridx=1;
-        constraints.gridy=2;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.NONE;
-        constraints.anchor=GridBagConstraints.CENTER;
-
-        panelMiTablero.add(MiBase);
-        add(panelMiTablero,constraints);
-
-
-    }
 
     public ArrayList direccion(){
 
@@ -244,6 +197,7 @@ public class tableroRival extends JFrame {
 
     public int[] getPosicionX(){
 
+
         return posicionx;
     }
     public int[] getPosiciony(){
@@ -252,13 +206,14 @@ public class tableroRival extends JFrame {
     }
 
 
+
     public void colocarBarcosEnemigos(){
 
 
         Random aleatorio=new Random();
 
         int x,y;
-       x=aleatorio.nextInt(9);
+        x=aleatorio.nextInt(9);
         y=aleatorio.nextInt(9);
 
         boolean horizontal=colocarbarcoHorizontal(btBase1[x][y]);
@@ -267,10 +222,10 @@ public class tableroRival extends JFrame {
         if(horizontal==true||vertical==true){
 
             System.out.println("sobrepóne" + x1);
-        colocarBarcosEnemigos();
+            colocarBarcosEnemigos();
         }else {
             if (portaaviones == true) {
-               // System.out.println(x1);
+                // System.out.println(x1);
                 for (int h = 0; h < numerobarcos; h++) {
                     for (int i = 0; i < btBase1.length; i++) {
                         for (int j = 0; j < btBase1[i].length; j++) {
@@ -338,7 +293,7 @@ public class tableroRival extends JFrame {
                                     }
                                 } else {
                                     if (btBase1[x][y] == btBase1[i][j]) {
-                                       image = new ImageIcon(getClass().getResource("/resources/porta.png"));
+                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         direcciones.add(btBase1[i][j].toString());
                                         botonesEnemigosColocados.add(btBase1[i][j]);
                                         btBase1[(i)][j].setIcon(image);
@@ -409,6 +364,7 @@ public class tableroRival extends JFrame {
 
 
                                 } else {
+
                                     if (i < (10 - numerobarcos) + 1) {
                                         if (btBase1[x][y] == btBase1[i][j]) {
 
@@ -508,9 +464,13 @@ public class tableroRival extends JFrame {
                                                 x1++;
                                             }
                                         }
+
                                     } else {
+
                                         if (i < (10 - numerobarcos) + 1) {
+
                                             if (btBase1[x][y] == btBase1[i][j]) {
+
                                                 image = new ImageIcon(getClass().getResource("/resources/destructo.png"));
                                                 if (botonesEnemigosColocados.contains(btBase1[i][j])) {
 
@@ -524,6 +484,7 @@ public class tableroRival extends JFrame {
                                                     posiciony[x1]=s2;
                                                     x1++;
                                                 }
+
                                                 i++;
                                                 if (botonesEnemigosColocados.contains(btBase1[(i + h) - 1][j])) {
 
@@ -549,7 +510,6 @@ public class tableroRival extends JFrame {
                                                 posicionx[x1]=s;
                                                 posiciony[x1]=s2;
                                                 x1++;
-
                                                 btBase1[i - h][j].setIcon(image);
                                                 botonesEnemigosColocados.add(btBase1[i - h][j]);
                                                 s =i - h;
@@ -641,7 +601,6 @@ public class tableroRival extends JFrame {
                                                     posicionx[x1]=s;
                                                     posiciony[x1]=s2;
                                                     x1++;
-
                                                     btBase1[i - h][j].setIcon(image);
                                                     botonesEnemigosColocados.add(btBase1[i - h][j]);
                                                     s =i - h;
@@ -665,18 +624,66 @@ public class tableroRival extends JFrame {
             setInfo.getBarcos(botonesEnemigosColocados);
 
         }
-}
+    }
+
+    private void initGUI() {
+        this.getContentPane().setLayout(new GridBagLayout());
+        Container contentPane = this.getContentPane();
+        //contentPane.setLayout(new ());
+        escucha=new Escucha();
+        MiBase =new JPanel();
+        MiBase.setLayout(null);
+        numerobarcos=4;
+        portaaviones=true;
+        MiBase.setPreferredSize(new Dimension(370,350));
+        MiBase.setBackground(Color.DARK_GRAY);
+        baseEnemiga =new JPanel();
+        baseEnemiga.setLayout(null);
+        baseEnemiga.setPreferredSize(new Dimension(370,350));
+        baseEnemiga.setBackground(Color.darkGray);
 
 
-private class Escucha1 implements ActionListener {
+        salir = new JButton( " X ");
+        constraints.gridx=1;
+        constraints.gridy=1;
+        constraints.gridwidth=1;
+        constraints.fill=GridBagConstraints.NONE;
+        constraints.anchor=GridBagConstraints.LINE_END;
+        salir.addActionListener(escucha);
+        this.add(salir,constraints);
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        this.add(salir,constraints);
 
-        if (e.getSource()==salir1){
-       setVisible(false);
-        }
+        headerProject = new Header("Tablero enemigo", Color.BLUE);
+        constraints.gridx=0;
+        constraints.gridy=0;
+        constraints.gridwidth=4;
+        constraints.fill=GridBagConstraints.HORIZONTAL;
+        this.add(headerProject,constraints);
+
+
+        panelMiTablero=new JPanel();
+        panelMiTablero.setPreferredSize(new Dimension(440, 400));
+        panelMiTablero.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0, 0, 0),3,true),"BASE",TitledBorder.CENTER,TitledBorder.TOP,new Font("Tahoma", 1, 15)));
+        constraints.gridx=1;
+        constraints.gridy=2;
+        constraints.gridwidth=1;
+        constraints.fill=GridBagConstraints.NONE;
+        constraints.anchor=GridBagConstraints.CENTER;
+
+        panelMiTablero.add(MiBase);
+        add(panelMiTablero,constraints);
+
 
     }
-}
+
+    private class Escucha implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==salir){
+                setVisible(false);
+            }
+        }
+    }
 }
