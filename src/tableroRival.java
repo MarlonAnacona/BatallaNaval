@@ -47,9 +47,11 @@ public class tableroRival extends JFrame {
         llenarBaseEnemiga();
         if(setInfo.setNumero()<1){
             colocarBarcosEnemigos();
+
         }else{
 
             mostrarbarcos();
+
         }
 
 
@@ -237,6 +239,7 @@ public class tableroRival extends JFrame {
 
                                     } else {
                                         botonesEnemigosColocados.add(btBase1[i][j]);
+
                                         direcciones.add(btBase1[i][j].toString());
                                         btBase1[i][j].setIcon(image);
                                         s = i;

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 /**
  * This class is used for ...
- * @author Jhon Alexander Valencia Hilamo jhon.hilamo@correounivalle.edu.co
- * @author Janiert Sebastian Salas Castillo janiert.salas@correounivalle.edu.co
+ * @author Marlon Anacona marlon.anacona@correounivalle.edu.co
+ * @author Luis Belalcazar luis.Belalcazar@correounivalle.edu.co
  * @version v.1.0.0 date:21/11/2021
  */
 public class GUI extends JFrame {
@@ -19,20 +19,22 @@ public class GUI extends JFrame {
     private Header headerProject;
     private JPanel panelBarcos,panelMiTablero,panelTableroPc,panelTableroPc2, MiBase, baseEnemiga;
     private Escucha escucha;
+    private boolean iniciarJuego;
     public static ArrayList<JButton> botonesEnemigos=new ArrayList<JButton>();
 
 
     public static boolean portaaviones,submarino,destructores,fragatas;
     public static int porta=1,subma=2,destruc=3,fragata=4;
-    private  ImageIcon image;
+    private  ImageIcon image=  new ImageIcon(getClass().getResource("/resources/porta.png"));
     private Mouse mouse=new Mouse();
     private JButton ayuda,salir,tableroPc,quitarTablero;
     private JButton [][] btBase;
     private JButton [][] btEnemy;
     private tableroRival mitablero= new tableroRival();
     private ArrayList<JButton> botonesUsados=new ArrayList<JButton>();
-    ;
     private boolean usado;
+
+    public static  int vida=420;
     public static int numerobarcos;
 
 
@@ -79,7 +81,14 @@ public class GUI extends JFrame {
     }
 
 
+public void habilitarBaseEnemiga(){
+    for (int j= 0; j < btBase.length; j++) {
+        for (int i = 0; i < btBase[j].length; i++) {
 
+            btEnemy[i][j].setEnabled(true);
+
+        }}
+}
 
     public void llenarEnemy() {
         int x = 10, y = 10;
@@ -90,6 +99,7 @@ public class GUI extends JFrame {
                 btEnemy[i][j].setBackground(Color.ORANGE);
                 btEnemy[i][j].setBounds(x, y, 35, 33);
                 btEnemy[i][j].addActionListener(escucha);
+                btEnemy[i][j].setEnabled(false);
                 baseEnemiga.add(btEnemy[i][j], BorderLayout.CENTER);
                 x += 35;
             }
@@ -97,6 +107,8 @@ public class GUI extends JFrame {
             y += 33;
         }
     }
+
+
 
 
     public void colocarBarcos() {
@@ -110,6 +122,8 @@ public class GUI extends JFrame {
                         botonesEnemigos.add( btEnemy[j][y]);
                         btEnemy[j][y].addActionListener(escucha);
                         break;
+                    }else{
+                        btEnemy[j][y].addActionListener(escucha);
                     }
                 }
             }
@@ -117,6 +131,7 @@ public class GUI extends JFrame {
     }
 
     }
+
     public int elegirBarcos(int num){
         if(portaaviones==true){
 
@@ -124,7 +139,7 @@ public class GUI extends JFrame {
 
         portaaviones=false;
         submarino=true;
-
+            image=  new ImageIcon(getClass().getResource("/resources/submarin.png"));
         }else{
         if(submarino==true&&subma!=0){
         subma--;
@@ -133,6 +148,7 @@ public class GUI extends JFrame {
             this.numerobarcos=num-1;
             submarino=false;
             destructores=true;
+            image=  new ImageIcon(getClass().getResource("/resources/destructo.png"));
         }
 
     }else{
@@ -142,6 +158,7 @@ public class GUI extends JFrame {
             this.numerobarcos=num-1;
             destructores=false;
             fragatas=true;
+                image=  new ImageIcon(getClass().getResource("/resources/fragat.png"));
             }
         }else{
             if(fragatas==true&&fragata!=0){
@@ -149,6 +166,10 @@ public class GUI extends JFrame {
                 if(fragata==0){
                 this.numerobarcos=num-1;
                 fragatas=false;
+                JOptionPane.showMessageDialog(null, "Ya puede empezar a jugar");
+                colocarBarcos();
+                habilitarBaseEnemiga();
+
             }
             }
         }
@@ -203,6 +224,23 @@ public class GUI extends JFrame {
         }
         return tieneBarco;
     }
+
+    public void cambiarcolor(JButton red){
+
+        ImageIcon f=new ImageIcon(getClass().getResource("/resources/bomba.jpeg"));
+        red.setIcon(f);
+        red.setEnabled(false);
+
+        if(vida==10){
+            JOptionPane.showMessageDialog(null, "HAS GANADO");
+        }
+    }
+
+    public void colocarFallo(JButton red){
+
+        ImageIcon f=new ImageIcon(getClass().getResource("/resources/fallo.jpeg"));
+        red.setIcon(f);
+    }
     /**
      * This method is used to set up the default JComponent Configuration,
      * create Listener and control Objects used for the GUI class
@@ -214,7 +252,7 @@ public class GUI extends JFrame {
         mitablero.setVisible(false);
         MiBase =new JPanel();
         MiBase.setLayout(null);
-
+iniciarJuego=false;
         MiBase.setPreferredSize(new Dimension(370,350));
         MiBase.setBackground(Color.DARK_GRAY);
         baseEnemiga =new JPanel();
@@ -248,15 +286,7 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.LINE_END;
         this.add(salir,constraints);
 
-        panelBarcos=new JPanel();
-        panelBarcos.setPreferredSize(new Dimension(165, 315));
-        panelBarcos.setBorder(BorderFactory.createTitledBorder(new LineBorder(new Color(0,0,0),2,true),"Mis Barcos", TitledBorder.CENTER,TitledBorder.TOP,new Font("Tahoma", 1, 14)));
-        constraints.gridx=0;
-        constraints.gridy=2;
-        constraints.gridwidth=1;
-        constraints.fill=GridBagConstraints.NONE;
-        constraints.anchor=GridBagConstraints.CENTER;
-        add(panelBarcos,constraints);
+
 
         tableroPc = new JButton("Mostrar Tablero");
         tableroPc.addActionListener(escucha);
@@ -317,21 +347,33 @@ public class GUI extends JFrame {
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
     private class Escucha implements ActionListener {
-
+public int sf=0;
         @Override
         public void actionPerformed(ActionEvent e) {
             barcosRecibidos setInfo= new barcosRecibidos();
             if (e.getSource()==salir){
                 System.exit(0);
+            }else{
+
+                if(e.getSource()==tableroPc){
+
+                    setInfo.setcolocados(true);
+                    mitablero.setVisible(true);
+                  //  colocarBarcos();
+
+                }else{
+                    if((botonesEnemigos.contains((JButton) e.getSource()))){
+
+                        cambiarcolor((JButton)e.getSource());
+
+                    }else{
+                        colocarFallo((JButton) e.getSource());
+                    }
+                }
+
             }
 
-            if(e.getSource()==tableroPc){
 
-               setInfo.setcolocados(true);
-            mitablero.setVisible(true);
-            colocarBarcos();
-
-            }
 
 
 
@@ -363,7 +405,6 @@ public class GUI extends JFrame {
                                 if (!(botonesUsados.contains(btBase[i][j]))) {
                                     if (j < 10) {
                                         if (e.getSource() == btBase[i][j]) {
-                                            image = new ImageIcon(getClass().getResource("/resources/porta.png"));
 
                                             if(botonesUsados.contains(btBase[i][j])){
 
@@ -388,8 +429,6 @@ public class GUI extends JFrame {
                             if (j < 10 - numerobarcos) {
                                 if (e.getSource() == btBase[i][j]) {
 
-                                    image = new ImageIcon(getClass().getResource("/resources/porta.png"));
-
                                     if (botonesUsados.contains(btBase[i][j])) {
 
                                     }else{
@@ -407,9 +446,6 @@ public class GUI extends JFrame {
                             }else{
                                 if (i <(10 - numerobarcos) ) {
                                     if (e.getSource() == btBase[i][j]) {
-
-
-                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
 
                                         if (botonesUsados.contains(btBase[i][j])) {
 
@@ -429,8 +465,6 @@ public class GUI extends JFrame {
                                     }
                                 } else {
                                     if (e.getSource() == btBase[i][j]) {
-                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
-
                                         if (botonesUsados.contains(btBase[i][j])) {
 
                                         }else{
@@ -479,7 +513,6 @@ public class GUI extends JFrame {
                             if (!(botonesUsados.contains(btBase[i][j]))) {
                                 if (j < 10) {
                                     if (e.getSource() == btBase[i][j]) {
-                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         btBase[i][j].setIcon(image);
                                     }
                                 } else {
@@ -499,7 +532,6 @@ public class GUI extends JFrame {
                                 if (j < 10 - numerobarcos) {
                                     if (e.getSource() == btBase[i][j]) {
 
-                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                         btBase[i][j].setIcon(image);
                                         j++;
                                         btBase[i][h + j].setIcon(image);
@@ -507,7 +539,6 @@ public class GUI extends JFrame {
                                 } else {
                                     if (i < (10 - numerobarcos)) {
                                         if (e.getSource() == btBase[i][j]) {
-                                            image = new ImageIcon(getClass().getResource("/resources/porta.png"));
                                             btBase[i][j].setIcon(image);
                                             i++;
                                             btBase[(i + h) ][j].setIcon(image);
@@ -516,7 +547,6 @@ public class GUI extends JFrame {
                                 }
                             } else {
                                 if (e.getSource() == btBase[i][j]) {
-                                    image = new ImageIcon(getClass().getResource("/resources/porta.png"));
 
                                 }
 
@@ -571,7 +601,7 @@ public class GUI extends JFrame {
                                 if (i < (10 - numerobarcos)) {
                                     if (e.getSource() == btBase[i][j]) {
 
-                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
+
                                         btBase[i][j].setIcon(null);
                                         i++;
 
@@ -579,7 +609,7 @@ public class GUI extends JFrame {
                                     }
                                 } else {
                                     if (e.getSource() == btBase[i][j]) {
-                                        image = new ImageIcon(getClass().getResource("/resources/porta.png"));
+
                                         btBase[i][j].setIcon(null);
 
 

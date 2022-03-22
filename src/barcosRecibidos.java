@@ -5,12 +5,17 @@ public class barcosRecibidos {
 
 public boolean barcosColocados1;
 public static  int barco=0;
+public static String a[]=new String[4];
 public static  ArrayList<JButton> botonesUsados=new ArrayList<JButton>();
 
 
 public barcosRecibidos(){
 
     }
+
+
+
+
 
     public void getBarcos(ArrayList enemigo){
 
